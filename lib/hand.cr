@@ -8,15 +8,14 @@ class Hand
     Push
   end
   
-  enum CountMethod
+  enum Count
     Soft
     Hard
   end
 
-  property cards : Array(Card)
+  property cards : Array(Card) = [] of Card
 
   def initialize
-    @cards = [] of Card
   end
 
   def busted?
@@ -25,8 +24,8 @@ class Hand
 
   def is_blackjack?
     return false unless cards.size == 2
-    return true if cards.first.is_ace? && cards.last.is_ten?
-    return true if cards.last.is_ace? && cards.first.is_ten?
+    c1, c2 = cards
+    (c1.is_ace? && c2.is_ten?) || (c2.is_ace? && c1.is_ten?)
   end
 
   def done?

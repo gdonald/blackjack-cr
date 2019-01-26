@@ -3,12 +3,9 @@ require "card"
 class Shoe
 
   property num_decks : Int32
-  property cards : Array(Card)
+  property cards : Array(Card) = [] of Card
 
-  def initialize
-    # TODO: make num_decks dynamic
-    @num_decks = 8
-    @cards = [] of Card
+  def initialize(@num_decks)
     new_regular
   end
 
