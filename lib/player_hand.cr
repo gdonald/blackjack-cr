@@ -9,7 +9,7 @@ class PlayerHand < Hand
   property payed : Bool = false
   property status : Hand::Status = Status::Unknown
   property game : Game
-  property bet : Int32
+  property bet : Float64
 
   def initialize(@game, @bet)
   end
@@ -127,9 +127,7 @@ class PlayerHand < Hand
   def dbl
     game.shoe.deal_card(self)
     played = true
-
-    tmp = bet * 2
-    bet = tmp
+    @bet *= 2
     
     process if is_done?
   end
@@ -195,5 +193,13 @@ class PlayerHand < Hand
 
       break if br
     end
+  end
+
+  def clone
+    player_hand = PlayerHand.new(game, bet)
+    cards.each do |card|
+      player_hand.cards << card
+    end
+    player_hand
   end
 end
