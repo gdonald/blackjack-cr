@@ -113,8 +113,34 @@ class Game
     end
 
     if !need_to_play_dealer_hand
-      
+      dealer_hand.played = true
+      pay_hands
+      return
     end
+
+    dealer_hand.hide_down_card = false
+
+    soft_count = dealer_hand.get_value(Hand::Count::Soft)
+    hard_count = dealer_hand.get_value(Hand::Count::Hard)
+    while soft_count < 18 && hard_count < 17
+      shoe.deal_card(dealer_hand)
+      soft_count = dealer_hand.get_value(Hand::Count::Soft)
+      hard_count = dealer_hand.get_value(Hand::Count::Hard)
+    end
+
+    dealer_hand.played = true
+    pay_hands
+  end
+
+  def need_to_play_dealer_hand
+    player_hands.each do |player_hand|
+      return true if !(player_hand.is_blackjack? || player_hand.is_busted?)
+    end
+    false
+  end
+
+  def split_current_hand
+    
   end
 
   def ask_insurance

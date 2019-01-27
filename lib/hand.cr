@@ -14,6 +14,7 @@ class Hand
   end
 
   property cards : Array(Card) = [] of Card
+  property played : Bool = false
 
   def initialize
   end

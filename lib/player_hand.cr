@@ -125,7 +125,7 @@ class PlayerHand < Hand
   end
 
   def dbl
-    deal_card
+    game.shoe.deal_card(self)
     played = true
 
     tmp = bet * 2
@@ -168,13 +168,12 @@ class PlayerHand < Hand
     output += "(D) Double  " if can_dbl?
     output += "\n"
 
+    puts output
+
     while true
       br = false
       
-      char = STDIN.raw &.read_char
-      puts "char: #{char}"
-
-      case char
+      case STDIN.raw &.read_char
       when 'h'
         br = true
         hit
