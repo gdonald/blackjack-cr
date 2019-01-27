@@ -7,7 +7,7 @@ class Hand
     Lost
     Push
   end
-  
+
   enum Count
     Soft
     Hard
@@ -18,8 +18,8 @@ class Hand
   def initialize
   end
 
-  def busted?
-    get_value(Hand::Soft) > 21
+  def is_busted?
+    get_value(Count::Soft) > 21
   end
 
   def is_blackjack?

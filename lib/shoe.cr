@@ -10,7 +10,7 @@ class Shoe
   end
 
   def next_card
-    @cards.pop
+    cards.pop
   end
 
   def deal_card(hand : Hand)
@@ -23,16 +23,16 @@ class Shoe
   end
 
   def shuffle
-    @cards.shuffle!
+    cards.shuffle!
   end
 
   def new_regular
-    @cards.clear
+    cards.clear
     
     num_decks.times do
       4.times do |suite|
         13.times do |value|
-          @cards << Card.new(value, suite)
+          cards << Card.new(value, suite)
         end
       end
     end

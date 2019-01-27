@@ -6,14 +6,14 @@ class Game
   MIN_BET = 500
   MAX_BET = 10000000
 
-  property shoe : Shoe
-  property dealer_hand : DealerHand
-  property player_hands : Array(PlayerHand)
-
   property num_decks : Int32 = 8
   property current_player_hand : Int32 = 0
   property current_bet : Int32 = 500
   property money : Int32 = 10000
+
+  property shoe : Shoe
+  property dealer_hand : DealerHand
+  property player_hands : Array(PlayerHand)
 
   def initialize
     load_game
@@ -33,7 +33,7 @@ class Game
     @shoe.shuffle if @shoe.needs_to_shuffle?
 
     @dealer_hand = DealerHand.new
-    player_hand = PlayerHand.new(@current_bet)
+    player_hand = PlayerHand.new(self, @current_bet)
 
     2.times do
       @shoe.deal_card(player_hand)
@@ -77,6 +77,43 @@ class Game
 
     @player_hands.each_with_index do |player_hand, index|
       puts player_hand.draw(index)
+    end
+  end
+
+  def all_bets
+    bets = 0
+    player_hands.each do |player_hand|
+      bets += player_hand.bet
+    end
+    bets
+  end
+
+  def more_hands_to_play
+    current_player_hand < player_hands.size - 1
+  end
+
+  def play_more_hands
+    tmp = current_player_hand + 1
+    current_player_hand = tmp
+
+    player_hand = player_hands[current_player_hand]
+    shoe.deal_card(player_hand)
+    if player_hand.is_done?
+      player_hand.process
+      return
+    end
+
+    draw_hands
+    player_hand.get_action
+  end
+
+  def play_dealer_hand
+    if dealer_hand.is_blackjack?
+      dealer_hand.hide_down_card = false
+    end
+
+    if !need_to_play_dealer_hand
+      
     end
   end
 

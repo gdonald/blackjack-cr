@@ -11,10 +11,6 @@ class DealerHand < Hand
     cards.first.is_ace?
   end
 
-  # def busted?
-  #   get_value(Hand::Soft) > 21
-  # end
-
   def get_value(count_method : Hand::Count)
     total = 0
 
