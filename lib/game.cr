@@ -312,7 +312,12 @@ class Game
     puts " Current Bet: #{Game.format_money(current_bet)}"
     print " Enter New Bet: $"
 
-    @current_bet = gets.to_s.to_i * 100.0
+    begin
+      @current_bet = gets.to_s.to_f * 100.0
+    rescue ArgumentError
+      @current_bet = MIN_BET
+    end
+
     normalize_current_bet
 
     deal_new_hand
