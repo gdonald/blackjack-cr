@@ -1,4 +1,5 @@
-require "./spec_helper"
+require "spec"
+require "../lib/card"
 
 describe Card do
   it "has FACES" do
