@@ -17,13 +17,13 @@ class Card
   ]
 
   getter value : Int32
-  getter suite : Int32
+  getter suit : Int32
 
-  def initialize(@value, @suite)
+  def initialize(@value, @suit)
   end
 
   def to_s(io)
-    io << Card::FACES[value][suite]
+    io << Card::FACES[value][suit]
   end
 
   def is_ace?

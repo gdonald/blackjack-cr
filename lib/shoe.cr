@@ -51,9 +51,9 @@ class Shoe
     cards.clear
     
     num_decks.times do
-      4.times do |suite|
+      4.times do |suit|
         13.times do |value|
-          cards << Card.new(value, suite)
+          cards << Card.new(value, suit)
         end
       end
     end
@@ -65,8 +65,8 @@ class Shoe
     cards.clear
     
     (num_decks * 5).times do
-      4.times do |suite|
-        cards << Card.new(0, suite)
+      4.times do |suit|
+        cards << Card.new(0, suit)
       end
     end
 
@@ -77,8 +77,8 @@ class Shoe
     cards.clear
     
     (num_decks * 5).times do
-      4.times do |suite|
-        cards << Card.new(10, suite)
+      4.times do |suit|
+        cards << Card.new(10, suit)
       end
     end
 
@@ -89,9 +89,9 @@ class Shoe
     cards.clear
     
     (num_decks * 5).times do
-      4.times do |suite|
-        cards << Card.new(0, suite)
-        cards << Card.new(10, suite)
+      4.times do |suit|
+        cards << Card.new(0, suit)
+        cards << Card.new(10, suit)
       end
     end
 
@@ -102,8 +102,8 @@ class Shoe
     cards.clear
     
     (num_decks * 5).times do
-      4.times do |suite|
-        cards << Card.new(6, suite)
+      4.times do |suit|
+        cards << Card.new(6, suit)
       end
     end
 
@@ -114,8 +114,8 @@ class Shoe
     cards.clear
     
     (num_decks * 5).times do
-      4.times do |suite|
-        cards << Card.new(7, suite)
+      4.times do |suit|
+        cards << Card.new(7, suit)
       end
     end
 
