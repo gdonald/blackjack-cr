@@ -2,16 +2,7 @@ require "card"
 
 class Shoe
 
-  class_property shuffle_specs = [
-    [95, 8],
-    [92, 7],
-    [89, 6],
-    [86, 5],
-    [84, 4],
-    [82, 3],
-    [81, 2],
-    [80, 1]
-  ]
+  class_property shuffle_specs = [80, 81, 82, 84, 86, 89, 92, 95]
 
   property num_decks : Int32
   property cards : Array(Card) = [] of Card
@@ -35,12 +26,7 @@ class Shoe
     cards_dealt = total_cards - cards.size
     used = cards_dealt / total_cards * 100.0
 
-    (0..7).each do |x|
-      next unless num_decks == Shoe.shuffle_specs[x][1]
-      return true if used > Shoe.shuffle_specs[x][0]
-    end
-
-    false
+    used > Shoe.shuffle_specs[num_decks - 1]
   end
 
   def shuffle
