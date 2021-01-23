@@ -359,12 +359,17 @@ class Game
     draw_hands
 
     puts " Number Of Decks: #{num_decks}"
-    puts " Enter New Number Of Decks: "
+    print " Enter New Number Of Decks: "
 
-    new_num_decks = (STDIN.raw &.read_char).to_s.to_i
+    begin
+      new_num_decks = (STDIN.raw &.read_char).to_s.to_i
+    rescue
+      new_num_decks = num_decks
+    end
+
     new_num_decks = 1 if new_num_decks < 1
     new_num_decks = 8 if new_num_decks > 8
-    num_decks = new_num_decks
+    @num_decks = new_num_decks
 
     game_options
   end
