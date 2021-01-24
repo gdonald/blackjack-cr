@@ -14,4 +14,4 @@ Command line Blackjack written in Crystal
 
 ## Build Status
 
-![Crystal CI](https://github.com/gdonald/blackjack-cr/workflows/Crystal%20CI/badge.svg)
+[![Crystal CI](https://github.com/gdonald/blackjack-cr/workflows/Crystal%20CI/badge.svg)](https://github.com/gdonald/blackjack-cr/actions)
