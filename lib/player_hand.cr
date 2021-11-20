@@ -37,13 +37,15 @@ class PlayerHand < Hand
     output += " ⇒  #{get_value(Count::Soft)} "
 
     if status == Status::Lost
-      output += "-"
+      output += " -"
     elsif status == Status::Won
-      output += "+"
+      output += " +"
+    elsif status == Status::Unknown
+      output += " "
     end
 
-    output += " #{Game.format_money(bet)}"
-    
+    output += "#{Game.format_money(bet)}"
+
     if !played && index == game.current_player_hand
       output += " ⇐"
     end
@@ -73,12 +75,12 @@ class PlayerHand < Hand
 
   def is_done?
     if played || stood || is_blackjack? || is_busted? || 21 == get_value(Count::Soft) || 21 == get_value(Count::Hard)
-      played = true
+      @played = true
 
       if !payed
         if is_busted?
-          payed = true
-          status = Status::Lost
+          @payed = true
+          @status = Status::Lost
           game.money -= bet
         end
       end
@@ -126,15 +128,15 @@ class PlayerHand < Hand
 
   def dbl
     game.shoe.deal_card(self)
-    played = true
+    @played = true
     @bet *= 2
-    
+
     process if is_done?
   end
 
   def stand
-    stood = true
-    played = true
+    @stood = true
+    @played = true
 
     if game.more_hands_to_play
       game.play_more_hands
@@ -170,7 +172,7 @@ class PlayerHand < Hand
 
     while true
       br = false
-      
+
       case STDIN.raw &.read_char
       when 'h'
         br = true

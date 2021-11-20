@@ -21,7 +21,7 @@ class Shoe
 
   def needs_to_shuffle?
     return true if cards.size == 0
-    
+
     total_cards = num_decks * 52
     cards_dealt = total_cards - cards.size
     used = cards_dealt / total_cards * 100.0
@@ -35,7 +35,7 @@ class Shoe
 
   def new_regular
     cards.clear
-    
+
     num_decks.times do
       4.times do |suit|
         13.times do |value|
@@ -49,7 +49,7 @@ class Shoe
 
   def new_aces
     cards.clear
-    
+
     (num_decks * 5).times do
       4.times do |suit|
         cards << Card.new(0, suit)
@@ -61,7 +61,7 @@ class Shoe
 
   def new_jacks
     cards.clear
-    
+
     (num_decks * 5).times do
       4.times do |suit|
         cards << Card.new(10, suit)
@@ -73,7 +73,7 @@ class Shoe
 
   def new_aces_jacks
     cards.clear
-    
+
     (num_decks * 5).times do
       4.times do |suit|
         cards << Card.new(0, suit)
@@ -86,7 +86,7 @@ class Shoe
 
   def new_sevens
     cards.clear
-    
+
     (num_decks * 5).times do
       4.times do |suit|
         cards << Card.new(6, suit)
@@ -98,7 +98,7 @@ class Shoe
 
   def new_eights
     cards.clear
-    
+
     (num_decks * 5).times do
       4.times do |suit|
         cards << Card.new(7, suit)
