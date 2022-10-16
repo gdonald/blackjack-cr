@@ -2,7 +2,7 @@ require "spec"
 require "../lib/dealer_hand"
 
 def new_dealer_hand
-  DealerHand.new    
+  DealerHand.new
 end
 
 describe DealerHand do
@@ -15,4 +15,4 @@ describe DealerHand do
       new_dealer_hand.hide_down_card.should be_truthy
     end
   end
-end 
+end

@@ -11,4 +11,4 @@ describe Hand do
     expected = ["Soft", "Hard"]
     Hand::Count.names.should eq(expected)
   end
-end 
+end
