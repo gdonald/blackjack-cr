@@ -6,7 +6,9 @@ Command line Blackjack written in Crystal
 
 `crystal run blackjack.cr`
 
-![Blackjack](https://raw.githubusercontent.com/gdonald/blackjack-cr/master/bj.png)
+![Blackjack](https://raw.githubusercontent.com/gdonald/blackjack-cr/master/ss1.png)
+
+![Blackjack](https://raw.githubusercontent.com/gdonald/blackjack-cr/master/ss2.png)
 
 ## Run specs
 
