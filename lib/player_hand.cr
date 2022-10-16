@@ -14,57 +14,62 @@ class PlayerHand < Hand
   def initialize(@game, @bet)
   end
 
-  def get_value(count_method : Hand::Count)
+  def self.is_busted?(player_hand : PlayerHand)
+    PlayerHand.get_value(player_hand, Count::Soft) > 21
+  end
+
+  def self.get_value(player_hand : PlayerHand, count_method : Hand::Count)
     total = 0
 
-    cards.each_with_index do |card, index|
+    player_hand.cards.each_with_index do |card, index|
       tmp_v = card.value + 1
       v = tmp_v > 9 ? 10 : tmp_v
       v = 11 if count_method == Count::Soft && v == 1 && total < 11
       total += v
     end
 
-    count_method == Count::Soft && total > 21 ? get_value(Count::Hard) : total
+    count_method == Count::Soft && total > 21 ? PlayerHand.get_value(player_hand, Count::Hard) : total
   end
 
-  def draw(index : Int32)
+  def self.draw(game : Game, player_hand : PlayerHand, index : Int32)
     output = " "
 
-    cards.each_with_index do |card, index|
-      output += "#{card} "
-    end
-
-    output += " ⇒  #{get_value(Count::Soft)} "
-
-    if status == Status::Lost
-      output += " -"
-    elsif status == Status::Won
-      output += " +"
-    elsif status == Status::Unknown
+    player_hand.cards.each_with_index do |card, index|
+      output += Card.draw(game, card)
       output += " "
     end
 
-    output += "#{Game.format_money(bet)}"
+    output += " ⇒  #{PlayerHand.get_value(player_hand, Count::Soft)} "
 
-    if !played && index == game.current_player_hand
+    if player_hand.status == Status::Lost
+      output += " -"
+    elsif player_hand.status == Status::Won
+      output += " +"
+    elsif player_hand.status == Status::Unknown
+      output += " "
+    end
+
+    output += "#{Game.format_money(player_hand.bet)}"
+
+    if !player_hand.played && index == game.current_player_hand
       output += " ⇐"
     end
 
     output += " "
 
-    if status == Status::Lost
-      if is_busted?
+    if player_hand.status == Status::Lost
+      if PlayerHand.is_busted?(player_hand)
         output += "Busted!"
       else
         output += "Lose!"
       end
-    elsif status == Status::Won
-      if is_blackjack?
+    elsif player_hand.status == Status::Won
+      if player_hand.is_blackjack?
         output += "Blackjack!"
       else
         output += "Won!"
       end
-    elsif status == Status::Push
+    elsif player_hand.status == Status::Push
       output += "Push"
     end
 
@@ -74,11 +79,11 @@ class PlayerHand < Hand
   end
 
   def is_done?
-    if played || stood || is_blackjack? || is_busted? || 21 == get_value(Count::Soft) || 21 == get_value(Count::Hard)
+    if played || stood || is_blackjack? || PlayerHand.is_busted?(self) || 21 == PlayerHand.get_value(self, Count::Soft) || 21 == PlayerHand.get_value(self, Count::Hard)
       @played = true
 
       if !payed
-        if is_busted?
+        if PlayerHand.is_busted?(self)
           @payed = true
           @status = Status::Lost
           game.money -= bet
@@ -100,17 +105,17 @@ class PlayerHand < Hand
 
   def can_dbl?
     return false if game.money < game.all_bets + bet
-    return false if stood || cards.size != 2 || is_busted? || is_blackjack?
+    return false if stood || cards.size != 2 || PlayerHand.is_busted?(self) || is_blackjack?
     true
   end
 
   def can_stand?
-    return false if stood || is_busted? || is_blackjack?
+    return false if stood || PlayerHand.is_busted?(self) || is_blackjack?
     true
   end
 
   def can_hit?
-    return false if played || stood || 21 == get_value(Count::Hard) || is_blackjack? || is_busted?
+    return false if played || stood || 21 == PlayerHand.get_value(self, Count::Hard) || is_blackjack? || PlayerHand.is_busted?(self)
     true
   end
 

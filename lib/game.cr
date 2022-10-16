@@ -9,9 +9,12 @@ class Game
   START_MONEY = 10000.0
 
   property num_decks : Int32 = 8
+  property deck_type : Int32 = 1
+  property face_type : Int32 = 1
   property current_player_hand : Int32 = 0
   property current_bet : Float64 = 500
   property money : Float64 = START_MONEY
+  property quitting : Bool = false
 
   property shoe : Shoe
   property dealer_hand : DealerHand
@@ -23,12 +26,35 @@ class Game
     @shoe = Shoe.new(num_decks)
     @dealer_hand = DealerHand.new
     @player_hands = [] of PlayerHand
+  end
 
-    deal_new_hand
+  def run
+    while !quitting
+      deal_new_hand
+    end
+  end
+
+  def build_new_shoe
+    case deck_type
+    when 1
+      shoe.new_regular
+    when 2
+      shoe.new_aces
+    when 3
+      shoe.new_jacks
+    when 4
+      shoe.new_aces_jacks
+    when 5
+      shoe.new_sevens
+    when 6
+      shoe.new_eights
+    else
+      shoe.new_regular
+    end
   end
 
   def deal_new_hand
-    @shoe.shuffle if @shoe.needs_to_shuffle?
+    build_new_shoe if shoe.needs_to_shuffle?
 
     @dealer_hand = DealerHand.new
     player_hand = PlayerHand.new(self, @current_bet)
@@ -68,13 +94,13 @@ class Game
   def draw_hands
     clear
 
-    puts "Dealer: "
-    puts @dealer_hand.draw
+    puts "\n Dealer: "
+    puts DealerHand.draw(self, @dealer_hand)
 
-    puts "\nPlayer: #{Game.format_money(@money)}:\n"
+    puts "\n Player: #{Game.format_money(@money)}:\n"
 
     @player_hands.each_with_index do |player_hand, index|
-      puts player_hand.draw(index)
+      puts PlayerHand.draw(self, player_hand, index)
     end
   end
 
@@ -117,12 +143,12 @@ class Game
 
     dealer_hand.hide_down_card = false
 
-    soft_count = dealer_hand.get_value(Hand::Count::Soft)
-    hard_count = dealer_hand.get_value(Hand::Count::Hard)
+    soft_count = DealerHand.get_value(dealer_hand, Hand::Count::Soft)
+    hard_count = DealerHand.get_value(dealer_hand, Hand::Count::Hard)
     while soft_count < 18 && hard_count < 17
       shoe.deal_card(dealer_hand)
-      soft_count = dealer_hand.get_value(Hand::Count::Soft)
-      hard_count = dealer_hand.get_value(Hand::Count::Hard)
+      soft_count = DealerHand.get_value(dealer_hand, Hand::Count::Soft)
+      hard_count = DealerHand.get_value(dealer_hand, Hand::Count::Hard)
     end
 
     dealer_hand.played = true
@@ -131,7 +157,7 @@ class Game
 
   def need_to_play_dealer_hand
     player_hands.each do |player_hand|
-      return true if !(player_hand.is_blackjack? || player_hand.is_busted?)
+      return true if !(player_hand.is_blackjack? || PlayerHand.is_busted?(player_hand))
     end
     false
   end
@@ -246,14 +272,14 @@ class Game
   end
 
   def pay_hands
-    dhv = dealer_hand.get_value(Hand::Count::Soft)
-    dhb = dealer_hand.is_busted?
+    dhv = DealerHand.get_value(dealer_hand, Hand::Count::Soft)
+    dhb = DealerHand.is_busted?(dealer_hand)
 
     player_hands.each do |player_hand|
       next if player_hand.payed
 
       player_hand.payed = true
-      phv = player_hand.get_value(Hand::Count::Soft)
+      phv = PlayerHand.get_value(player_hand, Hand::Count::Soft)
 
       if dhb || phv > dhv
         if player_hand.is_blackjack?
@@ -293,6 +319,7 @@ class Game
         game_options
       when 'q'
         br = true
+        @quitting = true
         clear
       else
         br = true
@@ -327,7 +354,7 @@ class Game
     clear
     draw_hands
 
-    puts " (N) Number of Decks  (T) Deck Type  (B) Back"
+    puts " (N) Number of Decks  (T) Deck Type  (F) Face Type  (B) Back"
 
     br = false
     while true
@@ -338,6 +365,9 @@ class Game
       when 't'
         br = true
         get_new_deck_type
+      when 'f'
+        br = true
+        get_new_face_type
       when 'b'
         br = true
         clear
@@ -385,27 +415,57 @@ class Game
       case STDIN.raw &.read_char
       when '1'
         br = true
+        @deck_type = 1
         shoe.new_regular
       when '2'
         br = true
+        @deck_type = 2
         shoe.new_aces
       when '3'
         br = true
+        @deck_type = 3
         shoe.new_jacks
       when '4'
         br = true
+        @deck_type = 4
         shoe.new_aces_jacks
       when '5'
         br = true
+        @deck_type = 5
         shoe.new_sevens
       when '6'
         br = true
+        @deck_type = 6
         shoe.new_eights
       else
-        br = true
-        clear
+        get_new_deck_type
+      end
+
+      if br
         draw_hands
-        game_options
+        bet_options
+        break
+      end
+    end
+  end
+
+  def get_new_face_type
+    clear
+    draw_hands
+
+    puts " (1) A♠  (2) 🂡"
+
+    br = false
+    while true
+      case STDIN.raw &.read_char
+      when '1'
+        br = true
+        @face_type = 1
+      when '2'
+        br = true
+        @face_type = 2
+      else
+        get_new_face_type
       end
 
       if br
@@ -417,7 +477,7 @@ class Game
   end
 
   def save_game
-    file = "#{num_decks}|#{money}|#{current_bet}"
+    file = "#{num_decks}|#{money}|#{current_bet}|#{deck_type}|#{face_type}"
     File.write SAVE_FILE, file
   end
 
@@ -429,10 +489,12 @@ class Game
     end
 
     a = file.split("|")
-    if a.size == 3
+    if a.size == 5
       @num_decks = a[0].to_i
       @money = a[1].to_f
       @current_bet = a[2].to_f
+      @deck_type = a[3].to_i
+      @face_type = a[4].to_i
     end
 
     if money < MIN_BET

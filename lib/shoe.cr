@@ -8,7 +8,6 @@ class Shoe
   property cards : Array(Card) = [] of Card
 
   def initialize(@num_decks)
-    new_regular
   end
 
   def next_card
@@ -22,7 +21,7 @@ class Shoe
   def needs_to_shuffle?
     return true if cards.size == 0
 
-    total_cards = num_decks * 52
+    total_cards = get_total_cards
     cards_dealt = total_cards - cards.size
     used = cards_dealt / total_cards * 100.0
 
@@ -33,12 +32,18 @@ class Shoe
     cards.shuffle!
   end
 
-  def new_regular
+  def get_total_cards
+    total_cards = num_decks * 52
+  end
+
+  def new_shoe(values : Array(Int32))
+    total_cards = get_total_cards
     cards.clear
 
-    num_decks.times do
+    while cards.size < total_cards
       4.times do |suit|
-        13.times do |value|
+        values.each do |value|
+          break if cards.size >= total_cards
           cards << Card.new(value, suit)
         end
       end
@@ -47,64 +52,27 @@ class Shoe
     shuffle
   end
 
+  def new_regular
+    new_shoe((0..12).to_a)
+  end
+
   def new_aces
-    cards.clear
-
-    (num_decks * 5).times do
-      4.times do |suit|
-        cards << Card.new(0, suit)
-      end
-    end
-
-    shuffle
+    new_shoe([0])
   end
 
   def new_jacks
-    cards.clear
-
-    (num_decks * 5).times do
-      4.times do |suit|
-        cards << Card.new(10, suit)
-      end
-    end
-
-    shuffle
+    new_shoe([10])
   end
 
   def new_aces_jacks
-    cards.clear
-
-    (num_decks * 5).times do
-      4.times do |suit|
-        cards << Card.new(0, suit)
-        cards << Card.new(10, suit)
-      end
-    end
-
-    shuffle
+    new_shoe([0, 10])
   end
 
   def new_sevens
-    cards.clear
-
-    (num_decks * 5).times do
-      4.times do |suit|
-        cards << Card.new(6, suit)
-      end
-    end
-
-    shuffle
+    new_shoe([6])
   end
 
   def new_eights
-    cards.clear
-
-    (num_decks * 5).times do
-      4.times do |suit|
-        cards << Card.new(7, suit)
-      end
-    end
-
-    shuffle
+    new_shoe([7])
   end
 end

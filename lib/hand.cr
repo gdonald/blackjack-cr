@@ -19,10 +19,6 @@ class Hand
   def initialize
   end
 
-  def is_busted?
-    get_value(Count::Soft) > 21
-  end
-
   def is_blackjack?
     return false unless cards.size == 2
     c1, c2 = cards

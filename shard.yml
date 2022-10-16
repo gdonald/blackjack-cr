@@ -1,5 +1,5 @@
 name: blackjack
-version: 1.0.0
+version: 1.0.1
 
 authors:
   - Greg Donald <gdonald@gmail.com>
@@ -8,6 +8,6 @@ targets:
   blackjack:
     main: blackjack.cr
 
-crystal: 0.27.0
+crystal: ">= 1.6.0"
 
 license: MIT

@@ -1,5 +1,5 @@
 require "game"
 
 module Blackjack
-  Game.new
+  Game.new.run
 end

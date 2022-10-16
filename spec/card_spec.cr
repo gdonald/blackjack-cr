@@ -1,19 +1,24 @@
 require "spec"
 require "../lib/card"
+require "../lib/game"
+
+def new_game
+  Game.new
+end
 
 describe Card do
   it "has FACES" do
-    Card::FACES[2][3].should eq "🃓"
+    Card::FACES[2][3].should eq "3♦"
   end
 
   it "FACES has a dealer down card" do
     card = Card.new(13, 0)
-    "#{card}".should eq "🂠"
+    Card.draw(new_game, card).should eq "??"
   end
 
-  it "#to_s" do
+  it "#draw" do
     card = Card.new(2, 3)
-    "#{card}".should eq "🃓"
+    Card.draw(new_game, card).should eq "3♦"
   end
 
   describe "#is_ace" do
