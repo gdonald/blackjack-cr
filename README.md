@@ -37,3 +37,5 @@ I've written Blackjack in several other languages:
 - [Elixir](https://github.com/gdonald/blackjack-ex)
 - [Python](https://github.com/gdonald/blackjack-py)
 - [C with SDL](https://github.com/gdonald/blackjack-c-sdl)
+- [Emacs Lisp](https://github.com/gdonald/blackjack-el)
+
