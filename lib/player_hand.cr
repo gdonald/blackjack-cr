@@ -6,7 +6,7 @@ class PlayerHand < Hand
 
   property stood : Bool = false
   property played : Bool = false
-  property payed : Bool = false
+  property paid : Bool = false
   property status : Hand::Status = Status::Unknown
   property game : Game
   property bet : Float64
@@ -82,9 +82,9 @@ class PlayerHand < Hand
     if played || stood || is_blackjack? || PlayerHand.is_busted?(self) || 21 == PlayerHand.get_value(self, Count::Soft) || 21 == PlayerHand.get_value(self, Count::Hard)
       @played = true
 
-      if !payed
+      if !paid
         if PlayerHand.is_busted?(self)
-          @payed = true
+          @paid = true
           @status = Status::Lost
           game.money -= bet
         end

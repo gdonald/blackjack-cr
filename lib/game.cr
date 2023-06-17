@@ -226,7 +226,7 @@ class Game
 
     player_hand.bet /= 2
     player_hand.played = true
-    player_hand.payed = true
+    player_hand.paid = true
     player_hand.status = Hand::Status::Lost
 
     @money -= player_hand.bet
@@ -276,9 +276,9 @@ class Game
     dhb = DealerHand.is_busted?(dealer_hand)
 
     player_hands.each do |player_hand|
-      next if player_hand.payed
+      next if player_hand.paid
 
-      player_hand.payed = true
+      player_hand.paid = true
       phv = PlayerHand.get_value(player_hand, Hand::Count::Soft)
 
       if dhb || phv > dhv
