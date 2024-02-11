@@ -1,5 +1,5 @@
 name: blackjack
-version: 1.0.1
+version: 1.0.2
 
 authors:
   - Greg Donald <gdonald@gmail.com>
@@ -8,6 +8,10 @@ targets:
   blackjack:
     main: blackjack.cr
 
-crystal: ">= 1.6.0"
+developer_dependencies:
+  crystal-kcov:
+    github: vici37/crystal-kcov
+
+crystal: ">= 1.11.2"
 
 license: MIT

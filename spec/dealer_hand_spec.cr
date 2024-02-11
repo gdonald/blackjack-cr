@@ -1,5 +1,5 @@
 require "spec"
-require "../lib/dealer_hand"
+require "../src/dealer_hand"
 
 def new_dealer_hand
   DealerHand.new

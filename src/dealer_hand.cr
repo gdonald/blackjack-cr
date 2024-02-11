@@ -1,4 +1,4 @@
-require "hand"
+require "./hand"
 
 class DealerHand < Hand
 

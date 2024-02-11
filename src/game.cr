@@ -1,6 +1,6 @@
-require "dealer_hand"
-require "player_hand"
-require "shoe"
+require "./dealer_hand"
+require "./player_hand"
+require "./shoe"
 
 class Game
   SAVE_FILE = "bj.txt"

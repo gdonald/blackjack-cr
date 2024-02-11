@@ -1,5 +1,5 @@
 require "spec"
-require "../lib/hand"
+require "../src/hand"
 
 describe Hand do
   it "has Status enum" do

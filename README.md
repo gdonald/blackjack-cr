@@ -4,7 +4,7 @@ Command line Blackjack written in Crystal
 
 ## Usage
 
-`crystal run blackjack.cr`
+`crystal run src/blackjack.cr` or `bin/blackjack`
 
 ![Blackjack](https://raw.githubusercontent.com/gdonald/blackjack-cr/master/ss1.png)
 
@@ -13,6 +13,10 @@ Command line Blackjack written in Crystal
 ## Run specs
 
 `crystal spec`
+
+## Run specs with coverage
+
+`./coverage.sh`
 
 ## Build Status
 

@@ -1,4 +1,4 @@
-require "hand"
+require "./hand"
 
 class PlayerHand < Hand
 

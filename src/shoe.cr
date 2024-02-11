@@ -1,4 +1,4 @@
-require "card"
+require "./card"
 
 class Shoe
 

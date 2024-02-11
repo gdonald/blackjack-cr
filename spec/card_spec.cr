@@ -1,6 +1,6 @@
 require "spec"
-require "../lib/card"
-require "../lib/game"
+require "../src/card"
+require "../src/game"
 
 def new_game
   Game.new
