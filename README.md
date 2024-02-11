@@ -4,7 +4,7 @@ Command line Blackjack written in Crystal
 
 ## Usage
 
-`crystal run src/blackjack.cr` or `bin/blackjack`
+`crystal run blackjack.cr` or `bin/blackjack`
 
 ![Blackjack](https://raw.githubusercontent.com/gdonald/blackjack-cr/master/ss1.png)
 
